@@ -1,8 +1,7 @@
 /*
-通知渠道测试
-
-cron: 5 9 * * *
-*/
+ new Env('通知渠道测试');
+ cron: 5 9 * * *
+ */
 
 function loadNotify() {
   const paths = ['./sendNotify', '../sendNotify', '/ql/data/scripts/sendNotify', '/ql/scripts/sendNotify'];
@@ -23,7 +22,7 @@ const notify = loadNotify();
 
 (async () => {
   const when = new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' });
-  const msg = `青龙通知测试成功\n时间: ${when}`;
+  const msg = '青龙通知测试成功\n时间: ' + when;
   console.log(msg);
   await notify.sendNotify('青龙通知测试', msg);
 })().catch((e) => {

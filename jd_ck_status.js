@@ -1,8 +1,7 @@
 /*
-京东 CK 状态检测
-
-cron: 10 8 * * *
-*/
+ new Env('京东CK状态检测');
+ cron: 10 8 * * *
+ */
 
 const https = require('https');
 
@@ -74,7 +73,7 @@ function requestUser(cookie) {
 
 (async () => {
   const cookies = getCookies();
-  console.log(`检测开始，共 ${cookies.length} 个 JD_COOKIE`);
+  console.log('检测开始，共 ' + cookies.length + ' 个 JD_COOKIE');
   if (!cookies.length) {
     const msg = '未找到 JD_COOKIE。请在青龙环境变量里添加。';
     console.log(msg);
@@ -93,7 +92,7 @@ function requestUser(cookie) {
     let nick = pin;
 
     if (info && info.netError) {
-      status = `网络失败: ${info.netError}`;
+      status = '网络失败: ' + info.netError;
     } else if (info && info.retcode === '0' && info.data && info.data.userInfo) {
       status = '正常';
       nick = info.data.userInfo.baseInfo.nickname || pin;
@@ -101,16 +100,16 @@ function requestUser(cookie) {
       status = '已掉线';
       dead += 1;
     } else {
-      status = `未知(${(info && info.retcode) || 'no-code'})`;
+      status = '未知(' + ((info && info.retcode) || 'no-code') + ')';
       dead += 1;
     }
 
-    const line = `账号${i + 1} ${nick} [${pin}] 状态: ${status}`;
+    const line = '账号' + (i + 1) + ' ' + nick + ' [' + pin + '] 状态: ' + status;
     console.log(line);
     lines.push(line);
   }
 
-  const title = dead ? `CK检测: ${dead} 个异常` : 'CK检测: 全部正常';
+  const title = dead ? 'CK检测: ' + dead + ' 个异常' : 'CK检测: 全部正常';
   await notify.sendNotify(title, lines.join('\n'));
 })().catch((e) => {
   console.error(e);
